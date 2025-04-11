@@ -1,0 +1,58 @@
+{# templates/vehicle/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des véhicules</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Prix/jour</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ vehicle.brand }}</td>
+                <td>{{ vehicle.model }}</td>
+                <td>{{ vehicle.dailyPrice|format_currency('EUR') }}</td>
+                <td>
+                    <button class="btn btn-danger delete-vehicle" 
+                            data-vehicle-id="{{ vehicle.id }}">
+                        Supprimer
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+    document.querySelectorAll('.delete-vehicle').forEach(button => {
+        button.addEventListener('click', async function() {
+            const vehicleId = this.getAttribute('data-vehicle-id');
+            
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
+                try {
+                    const response = await fetch(`/api/vehicles/${vehicleId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        const error = await response.json();
+                        alert(error.error);
+                    }
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    alert('Une erreur est survenue lors de la suppression');
+                }
+            }
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,3 +1,42 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+home:
+    path: /
+    controller: App\Controller\DefaultController::index
+    methods: GET
+
+# Authentification
+login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+    methods: [GET, POST]
+
+logout:
+    path: /logout
+    methods: GET
+
+# Inscription clients
+register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+    methods: POST
+
+# Gestion véhicules (admin)
+admin_vehicles:
+    path: /admin/vehicles
+    controller: App\Controller\Admin\VehicleController::index
+    methods: GET
+
+admin_vehicle_create:
+    path: /admin/vehicles/new
+    controller: App\Controller\Admin\VehicleController::create
+    methods: [GET, POST]
+
+# Réservations (client)
+reservations:
+    path: /client/reservations
+    controller: App\Controller\Client\ReservationController::index
+    methods: GET
+
+reservation_create:
+    path: /client/reservations/new
+    controller: App\Controller\Client\ReservationController::create
+    methods: [GET, POST]
